@@ -14,7 +14,6 @@ forbes <- type_convert(forbes)
 forbes <- filter(forbes, net_worth >= 1)
 
 # Question 3 --------------------------------------------------------------
-library(ggplot2)
 ggplot(forbes, aes(x = age, y = net_worth)) + geom_point() + geom_smooth()
 ggplot(forbes, aes(x = age, y = log(net_worth))) + geom_point() + geom_smooth()
 
@@ -40,4 +39,14 @@ ggplot(forbesdiff) +
   xlab("Country")
 
 # Question 6 --------------------------------------------------------------
+ggplot(forbesdiff) +
+  geom_bar(aes(x = reorder(country, -diffsize), y = diffsize, fill = country),  stat = "identity", show.legend = FALSE) + 
+  coord_flip() +
+  theme_minimal() +
+  ggtitle("Difference between highest and lowest net worth per country ") + 
+  ylab("Difference in net worth (in billion dollars)") +
+  xlab("Countries ordered by (ascending) difference in net worth")
+
+# Question 7 --------------------------------------------------------------
+
 
