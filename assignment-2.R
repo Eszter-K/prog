@@ -1,12 +1,13 @@
 library(tidyverse)
 
-
 # Question 1 ------------------------------------------------------------------------------------------------------
 
-
-tidy_df <- function(data, column_prefix = "var"){
-  
+tidy_df <- function(data, column_prefix){
+  gather(data, key = "variable", value = "value", starts_with(column_prefix))
 }
+
+#test function
+tidy_df(austen_text, column_prefix = "t")
 
 
 # Question 2 ------------------------------------------------------------------------------------------------------
@@ -30,7 +31,8 @@ get_jane_austen_data <- function(){
 
 # extract_possible_names 
 
-
+df %>%
+  filter(str_detect(df$text, "^[capitals]"))
 
 
 # Question 3 ------------------------------------------------------------------------------------------------------
