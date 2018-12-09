@@ -2,13 +2,23 @@ library(tidyverse)
 
 # Question 1 ------------------------------------------------------------------------------------------------------
 
+#' Gather columns starting with a certain set of characters
+#'
+#' @param data A dataframe to be tidied.
+#' @param column_prefix A character vector containing the string to use. The function gathers all 
+#' columns that start with this string.
+#'
+#' @return A tibble with the relevant columns gathered. Columns that do not start with 
+#' the given prefix are retained as is.
+#'
 tidy_df <- function(data, column_prefix){
-  gather(data, key = "variable", value = "value", starts_with(column_prefix))
+  tidy_df <- gather(data, key = "variable", value = "value", starts_with(column_prefix))
+  return(tidy_df)
 }
 
 #test function
-tidy_df(austen_text, column_prefix = "t")
-
+tidy_df(austen_text, column_prefix = "t") %>% 
+  select(id, variable)
 
 # Question 2 ------------------------------------------------------------------------------------------------------
 
