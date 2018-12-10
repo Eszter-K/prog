@@ -16,10 +16,6 @@ tidy_df <- function(data, column_prefix){
   return(tidy_df)
 }
 
-#test function
-tidy_df(austen_text, column_prefix = "t") %>% 
-  select(id, variable)
-
 # Question 2 ------------------------------------------------------------------------------------------------------
 
 #' Get the Jane Austen data
@@ -39,12 +35,39 @@ get_jane_austen_data <- function(){
   invisible()
 }
 
-# extract_possible_names 
+# extract_possible_names --------------------------------------------------
 
-df %>%
-  filter(str_detect(df$text, "^[capitals]"))
+extract_possible_names <- function(data, col) {
+  match <- "\\b[A-Z]\\w+" #regexp denoting capital letters
+  newdata <- filter(data, str_detect(col, match))  #filter out columns without no capital letters
+  newdata <- mutate(newdata, names = str_extract_all(col, match)) %>% #add column with extracted strings
+  separate_rows(newdata, names) %>% #pull rows apart (some had more than 1 word with a capital letter)
+  filter(names != "c" | names != "") %>% #filter out weird values resulting from separate_rows
+  tidy_df(column_prefix = names) %>% #gather
+    mutate(id = seq.int(length.out = nrow(newdata))) %>% #add id column
+    rename(text_id = gutenberg_id, name = value) %>% #add name and text_id columns
+    select(text_id, id, name) #select columns of interest to print
+}
 
+#try on janeausten data
+extract_possible_names(data = austen_text, col = "text")
 
+#As you can see, the function doesn't work. When I execute the same commands outside of the 
+#function environment, it works just fine. I'm not able to fix this, so to continue the 
+#assignment, I execute the commands normally below:
+
+match <- "\\b[A-Z]\\w+" #match = words starting with caps
+newdata <- filter(austen_text, str_detect(text, match))  #filter out columns without caps
+newdata <- mutate(newdata, names = str_extract_all(text, match)) #add column with extracted strings
+newdata <- separate_rows(newdata, names) 
+newdata <- filter(newdata, names != "c" & names != "") 
+newdata <- tidy_df(newdata, column_prefix = "names")  
+rename(newdata, text_id = gutenberg_id, name = value) %>% 
+  mutate(id = seq.int(length.out = nrow(newdata))) %>% 
+  select(text_id, id, name) -> new_austen
+
+#I work on the new_austen df in the next questions.
+ 
 # Question 3 ------------------------------------------------------------------------------------------------------
 
 # filter_names
