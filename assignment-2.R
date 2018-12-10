@@ -53,8 +53,7 @@ extract_possible_names <- function(data, col) {
 extract_possible_names(data = austen_text, col = "text")
 
 #As you can see, the function doesn't work. When I execute the same commands outside of the 
-#function environment, it works just fine. I'm not able to fix this, so to continue the 
-#assignment, I execute the commands normally below:
+#function environment, it works just fine. See below:
 
 match <- "\\b[A-Z]\\w+" #match = words starting with caps
 newdata <- filter(austen_text, str_detect(text, match))  #filter out columns without caps
@@ -64,15 +63,12 @@ newdata <- filter(newdata, names != "c" & names != "")
 newdata <- tidy_df(newdata, column_prefix = "names")  
 rename(newdata, text_id = gutenberg_id, name = value) %>% 
   mutate(id = seq.int(length.out = nrow(newdata))) %>% 
-  select(text_id, id, name) -> new_austen
+  select(text_id, id, name) 
 
-#I work on the new_austen df in the next questions.
  
 # Question 3 ------------------------------------------------------------------------------------------------------
 
 # filter_names
-
-
 
 # Question 4 ------------------------------------------------------------------------------------------------------
 
